@@ -51,7 +51,7 @@ def get_argument_parser() -> ArgumentParser:
         dest='country',
         type=str,
         required=True,
-        help='REQUIRED. The country code (two letters, capitalized).',
+        help='REQUIRED. The country code (two letters, case insensitive).',
     )
     parser.add_argument(
         '--power',
@@ -73,7 +73,7 @@ def modify_regdb(country: str, power: int) -> int:
     The process is to swap the power value currently in the db file associated
     with the country input with the new power input.
 
-    :param country: A two letter (capitalized) country code of interest.
+    :param country: A two letter country code of interest.
     :param power: The new power to set for the provided country.
     :return: Either the previous max txpower or the modified max txpower.
     """
@@ -104,6 +104,4 @@ if __name__ == '__main__':
     parser: ArgumentParser = get_argument_parser()
     args = parser.parse_args()
     
-    sys.exit(modify_regdb(args.country, int(args.power)))
-    
-    
+    sys.exit(modify_regdb(args.country.upper(), int(args.power)))
