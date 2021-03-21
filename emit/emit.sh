@@ -7,7 +7,11 @@ main() {
   fi
 
   # Set target interface to monitor mode and emitting on channel 10
-  sudo ifconfig $INTERFACE down && sudo iwconfig $INTERFACE mode monitor && sudo ifconfig $INTERFACE up
+  CUR_MODE=$(iwconfig $INTERFACE | grep -Po "(?<=Mode:)\w+(?=\s)")
+  if [[ $CUR_MODE != "Monitor" ]]; then
+    echo "Change $INTERFACE from $CUR_MODE to Monitor"
+    sudo ifconfig $INTERFACE down && sudo iwconfig $INTERFACE mode monitor && sudo ifconfig $INTERFACE up
+  fi
   sudo iwconfig $INTERFACE channel $CHANNEL
 
   # Perform probe request injection in a tmux pane.

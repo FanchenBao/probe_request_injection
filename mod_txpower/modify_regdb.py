@@ -16,10 +16,7 @@ console_handler.setFormatter(formatter)
 logger.addHandler(console_handler)
 logger.setLevel(logging.DEBUG)
 
-
 DB_PATH = Path(__file__).absolute().parent.joinpath('wireless-regdb-master-2019-06-03/db.txt')
-CREATE_DEPLOY_NEW_DB_PATH = Path(__file__).absolute().parent.joinpath('create_deploy_new_db.sh')
-SIGN_VALIDATE_PATH = Path(__file__).absolute().parent.joinpath('sign_validate.sh')
 
 
 def get_argument_parser() -> ArgumentParser:
@@ -30,19 +27,29 @@ def get_argument_parser() -> ArgumentParser:
     parser = ArgumentParser(
         description='''
         Change the max txpower of a given country code on the wireless-regdb
-        database file under 2.4 GHz. The script logs the max txpower before
-        and after it is modified. Or, if the power argument is a negative value,
-        only the before value is logged.
+        database file under 2.4 GHz (the database must be in this location:
+        ./wireless-regdb-master-2019-06-03/db.txt). The script logs the max
+        txpower before and after it is modified. Or, if the power argument is
+        a negative value, only the before value is logged. The script exit with
+        the current txpower in the regulatory database. So exit code should NOT
+        be used in their traditional meaning to check whether the script has
+        run successfully. If the script fails, it exits with -1. If it succeeds,
+        it exits with the txpower, which can be captured by $? right afterwards.
 
         For example, to change the max txpower associated with Great Britain
-        under 2.4 GHz in the wireless-regdb to 20 dBm, run:
+        under 2.4 GHz in the wireless-regdb to 20 dBm:
         
         python3 main.py --country GB --power 20
 
         To check the current max txpower associated with USA without modifying
-        it in the regdb, run:
+        it in the regdb:
 
         python3 main.py --country US --power -1
+
+        To capture the current max txpower without modification:
+
+        python3 main.py --country US --power -1
+        echo $?
         ''',
         formatter_class=RawDescriptionHelpFormatter,
     )
@@ -104,4 +111,9 @@ if __name__ == '__main__':
     parser: ArgumentParser = get_argument_parser()
     args = parser.parse_args()
     
-    sys.exit(modify_regdb(args.country.upper(), int(args.power)))
+    try:
+        txpower = modify_regdb(args.country.upper(), int(args.power))
+    except Exception:
+        logger.exception('Cannot modify regulatory database.')
+        sys.exit(-1)
+    sys.exit(txpower)

@@ -1,10 +1,12 @@
 #!/bin/bash
 
+# NOTE: Before running this script, making sure the regulatory database has
+# already been modified either manually or via modify_regdb.py
+
 MAX_RETRY=5
 
 # Run the entire txpower modification in a separate shell because we need to
 # set up `sudo su`.
-# Modification to the regdb must happen before this script is called
 tmux new -s mod_txpower -d
 tmux send-keys -t mod_txpower 'cd $HOME/probe_request_injection/mod_txpower' Enter
 tmux send-keys -t mod_txpower 'sudo su' Enter
