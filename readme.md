@@ -7,7 +7,7 @@ This repo contains scripts and guides to achieve two goals:
 1. Modify txpower on a WiFi chip that is resistant to the commonly prescribed method.
 2. Perform probe request injection
 
-For the usage of the scripts, you can go to [Usage]() directly. If you want to read a bit about the story behind this repo, continue onto [Story]().
+For the usage of the scripts, you can go to [Usage](https://github.com/FanchenBao/probe_request_injection#usage) directly. If you want to read a bit about the story behind this repo, continue onto [Story](https://github.com/FanchenBao/probe_request_injection#story).
 
 # Story
 Below is the process I have gone through to find a solution that allows me to perform probe request injection at different txpower level on a [AWUS036NHA](https://www.alfa.com.tw/products/awus036nha?variant=36473966166088) WiFi adapter.
@@ -127,7 +127,7 @@ However, we will not be running this script directly to emit probe request, beca
 
 ### Example 1: modify txpower
 
-Suppose your WiFi chip (wlan1) is stuck with country code GB (see [Solution]() for how you can tell which country your WiFi chip is stuck with), which has txpower capped at 20 dBm. You want to modify txpower to 30 and 40 dBm. Here are two scripts to help you achieve your goal.
+Suppose your WiFi chip (wlan1) is stuck with country code GB (see [Solution](https://github.com/FanchenBao/probe_request_injection#solution) for how you can tell which country your WiFi chip is stuck with), which has txpower capped at 20 dBm. You want to modify txpower to 30 and 40 dBm. Here are two scripts to help you achieve your goal.
 
 1. Modify regulatory database
 
@@ -175,7 +175,7 @@ Suppose your WiFi chip (wlan1) is stuck with country code GB (see [Solution]() f
 
 ### Example 3: emit probe request on 30 and 40 dBm
 
-After going through [Example 1](), we can use the following script to emit probe request on wlan1 at two different txpower level, with their MAC address specifying which txpower level they are on. Each emission lasts 30 seconds.
+After going through [Example 1](https://github.com/FanchenBao/probe_request_injection#example-1-modify-txpower), we can use the following script to emit probe request on wlan1 at two different txpower level, with their MAC address specifying which txpower level they are on. Each emission lasts 30 seconds.
 
 ```bash
 COUNTRY_LIST="ZA ZW"
@@ -194,4 +194,4 @@ done
 ```
 
 # License
-[MIT]()
+[MIT](https://github.com/FanchenBao/probe_request_injection/blob/master/LICENSE)
