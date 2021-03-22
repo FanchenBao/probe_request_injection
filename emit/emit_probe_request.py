@@ -30,11 +30,13 @@ def get_argument_parser() -> ArgumentParser:
         run:
         
         sudo su
+        source venv/bin/activate
         python3 emit_probe_request.py --interface wlan1 --interval 1
 
         To emit probe request with a custom MAC address prefix, run:
 
         sudo su
+        source venv/bin/activate
         python3 emit_probe_request.py --interface wlan1 --interval 1 --mac 11:22
         ''',
         formatter_class=RawDescriptionHelpFormatter,

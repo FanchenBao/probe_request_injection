@@ -34,7 +34,7 @@ print_usage() {
   printf "%s\t%s\n" "-i" "WiFi device interface in monitor mode. Type \"iwconfig\" to locate the target interface. Required." \
     "-c" "The channel on which probe request is injected. Required." \
     "--interval" "The interval in seconds between two consecutive probe request packets. Optional. Default to 0.05" \
-    "--mac" "The MAC address prefix. See emit_probe_request.py for details. Default to empty string"
+    "--mac" "The MAC address prefix. See the '--mac' option in emit_probe_request.py for details. Default to empty string"
 }
 
 # Parse options and flags

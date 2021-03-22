@@ -39,16 +39,16 @@ def get_argument_parser() -> ArgumentParser:
         For example, to change the max txpower associated with Great Britain
         under 2.4 GHz in the wireless-regdb to 20 dBm:
         
-        python3 main.py --country GB --power 20
+        python3 modify_regdb.py --country GB --power 20
 
         To check the current max txpower associated with USA without modifying
         it in the regdb:
 
-        python3 main.py --country US --power -1
+        python3 modify_regdb.py --country US --power -1
 
         To capture the current max txpower without modification:
 
-        python3 main.py --country US --power -1
+        python3 modify_regdb.py --country US --power -1
         echo $?
         ''',
         formatter_class=RawDescriptionHelpFormatter,
