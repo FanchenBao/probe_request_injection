@@ -73,11 +73,23 @@ Here is the solution that suits my need.
 
 For modifying txpower, do the following:
 
-1. `sudo apt-get update && sudo apt-get install python-future python-m2crypto libgcrypt20 libgcrypt20-dev libnl-dev -y`
-2. `wget https://git.kernel.org/pub/scm/linux/kernel/git/sforshee/wireless-regdb.git/snapshot/wireless-regdb-master-2019-06-03.tar.gz`
-3. `wget https://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/crda.git/snapshot/crda-4.14.tar.gz`
-4. Move `wireless-regdb-master-2019-06-03.tar.gz` and `crda-4.14.tar.gz` to `probe_request_injection`, and run `tar xfv crda-4.14.tar.gz` and `tar xfv wireless-regdb-master-2019-06-03.tar.gz`
-5. If the original `regulatory.bin` in your system exists in `/lib/crda/` instead of `/usr/lib/crda`, as is the case with RPi, change this line `REG_BIN?=/usr/lib/crda/regulatory.bin` to `REG_BIN?=/lib/crda/regulatory.bin` in `crda-4.14/Makefile`.
+1. System-level dependency
+    ```bash
+    sudo apt-get update && sudo apt-get install python-future python-m2crypto libgcrypt20 libgcrypt20-dev libnl-dev -y
+    ```
+2. Get repo for modifying regulatory database
+    ```bash
+    wget https://git.kernel.org/pub/scm/linux/kernel/git/sforshee/wireless-regdb.git/snapshot/wireless-regdb-master-2019-06-03.tar.gz
+    wget https://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/crda.git/snapshot/crda-4.14.tar.gz
+    tar xfv wireless-regdb-master-2019-06-03.tar.gz
+    tar xfv crda-4.14.tar.gz
+    ```
+3. Move the downloaded repos to `probe_request_injection/mod_txpower`
+    ```bash
+    mv -r wireless-regdb-master-2019-06-03 probe_request_injection/mod_txpower
+    mv -r crda-4.14 probe_request_injection/mod_txpower
+    ```
+4. If the original `regulatory.bin` in your system exists in `/lib/crda/` instead of `/usr/lib/crda` (i.e. check to see the contents of `/lib/crda/` and `/usr/lib/crda`), as is the case with RPi, change this line `REG_BIN?=/usr/lib/crda/regulatory.bin` to `REG_BIN?=/lib/crda/regulatory.bin` in `mod_txpower/crda-4.14/Makefile`.
 
 For emitting probe request, do the following:
 
@@ -97,15 +109,19 @@ The rebuild contains two steps (assuming we are in the root directory of `probe_
 
     The `mod_txpower/modify_regdb.py` script has other features. Read `python3 mod_txpower/modify_regdb.py -h` for details. **Note that to run this python script, you do NOT have to be in the virtual environment.**
 
-2. Run command
+2. Prepare backups
+    ```bash
+    sudo cp /lib/firmware/regulatory.db /lib/firmware/regulatory.db-backup
+    sudo cp /lib/firmware/regulatory.db.p7s /lib/firmware/regulatory.db.p7s-backup
+    sudo cp /lib/crda/regulatory.bin /lib/crda/regulatory.bin-backup
+    ```
+e. Run command
 
     ```bash
     ./mod_txpower/mod_txpower.sh
     ```
     
-    The script takes care of all the building and file copying steps of rebuilding the regulatory database. These steps are exactly the same as specified in the [answer](https://askubuntu.com/a/1169997/1193746). **Note that the script does NOT handle the backup step (step 6 in the answer). You will have to do that manually before running this command.**
-
-    The script also triggers reboot. After reboot, the updated regulatory database is in use.
+    The script takes care of all the building and file copying steps of rebuilding the regulatory database. These steps are exactly the same as specified in the [answer](https://askubuntu.com/a/1169997/1193746). The script also triggers reboot. After reboot, the updated regulatory database is in use.
 
 
 ## Emit probe request
