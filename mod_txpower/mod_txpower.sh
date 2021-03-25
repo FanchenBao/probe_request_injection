@@ -3,7 +3,7 @@
 # NOTE: Before running this script, making sure the regulatory database has
 # already been modified either manually or via modify_regdb.py
 
-MAX_RETRY=5
+MAX_RETRY=10
 
 # Run the entire txpower modification in a separate shell because we need to
 # set up `sudo su`.
