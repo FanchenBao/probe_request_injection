@@ -115,7 +115,7 @@ The rebuild contains two steps (assuming we are in the root directory of `probe_
     sudo cp /lib/firmware/regulatory.db.p7s /lib/firmware/regulatory.db.p7s-backup
     sudo cp /lib/crda/regulatory.bin /lib/crda/regulatory.bin-backup
     ```
-e. Run command
+3. Run command
 
     ```bash
     ./mod_txpower/mod_txpower.sh
