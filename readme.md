@@ -86,8 +86,8 @@ For modifying txpower, do the following:
     ```
 3. Move the downloaded repos to `probe_request_injection/mod_txpower`
     ```bash
-    mv -r wireless-regdb-master-2019-06-03 probe_request_injection/mod_txpower
-    mv -r crda-4.14 probe_request_injection/mod_txpower
+    mv wireless-regdb-master-2019-06-03 probe_request_injection/mod_txpower
+    mv crda-4.14 probe_request_injection/mod_txpower
     ```
 4. If the original `regulatory.bin` in your system exists in `/lib/crda/` instead of `/usr/lib/crda` (i.e. check to see the contents of `/lib/crda/` and `/usr/lib/crda`), as is the case with RPi, change this line `REG_BIN?=/usr/lib/crda/regulatory.bin` to `REG_BIN?=/lib/crda/regulatory.bin` in `mod_txpower/crda-4.14/Makefile`.
 
