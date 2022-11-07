@@ -19,7 +19,7 @@ main() {
   tmux send-keys -t emit 'cd $HOME/probe_request_injection' Enter
   tmux send-keys -t emit 'sudo su' Enter
   tmux send-keys -t emit 'source venv/bin/activate' Enter
-  tmux send-keys -t emit "python3 emit/emit_probe_request.py --interface $INTERFACE --interval $INTERVAL --mac $MAC" Enter
+  tmux send-keys -t emit "python3 emit/emit_probe_request.py --interface $INTERFACE --interval $INTERVAL --mac $MAC --ssid $SSID" Enter
 }
 
 
@@ -28,13 +28,15 @@ INTERFACE=""
 CHANNEL=""
 INTERVAL="0.05"
 MAC="''"  # default is an empty string literal
+SSID="mock_probe_request"  # default value of SSID is the same as
 
 print_usage() {
-  printf "%s\n" "Usage: emit.sh [-i wifi_interface] [-c channel] [--interval interval] [--mac mac_prefix]"
+  printf "%s\n" "Usage: emit.sh [-i wifi_interface] [-c channel] [--interval interval] [--mac mac_prefix] [--ssid SSID]"
   printf "%s\t%s\n" "-i" "WiFi device interface in monitor mode. Type \"iwconfig\" to locate the target interface. Required." \
     "-c" "The channel on which probe request is injected. Required." \
     "--interval" "The interval in seconds between two consecutive probe request packets. Optional. Default to 0.05" \
-    "--mac" "The MAC address prefix. See the '--mac' option in emit_probe_request.py for details. Default to empty string"
+    "--mac" "The MAC address prefix. See the '--mac' option in emit_probe_request.py for details. Default to empty string" \
+    "--ssid" "The SSID name as part of the PNL. See the '--ssid' option in emit_probe_request.py for details. Default to 'mock_probe_request'"
 }
 
 # Parse options and flags
@@ -70,6 +72,13 @@ while [[ "$#" -gt 0 ]]; do
     --mac)  # MAC address prefix
       if [[ "$2" != "" ]]; then
         MAC="$2"
+        shift 1
+      fi
+      shift 1
+      ;;
+    --ssid)  # SSID name
+      if [[ "$2" != "" ]]; then
+        SSID="$2"
         shift 1
       fi
       shift 1
