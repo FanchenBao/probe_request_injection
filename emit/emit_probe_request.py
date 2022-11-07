@@ -1,4 +1,4 @@
-from scapy.all import sendp, Dot11, RadioTap, RandMAC
+from scapy.all import sendp, Dot11, RadioTap, RandMAC, Dot11Elt
 from datetime import datetime
 import logging
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
@@ -86,6 +86,20 @@ def get_argument_parser() -> ArgumentParser:
         three pairs are randomly generated.
         ''',
     )
+    parser.add_argument(
+        '--ssid',
+        dest='ssid',
+        type=str,
+        required=False,
+        default='mock_probe_request',
+        help='''
+        OPTIONAL. SSID is a string that shows up as a network in the probe
+        request's Preferred Network List (PNL). It can be collected using
+        the `wlan.ssid` field of `tshark`. For probe request injection, we can
+        specify a unique SSID as a filtering target to differentiate mock probe
+        request from real ones. The default value is "mock_probe_request".
+        ''',
+    )
     return parser
 
 
@@ -110,7 +124,8 @@ if __name__ == '__main__':
             addr1="ff:ff:ff:ff:ff:ff",
             addr2=RandMAC(mac_pre),
             addr3="ff:ff:ff:ff:ff:ff",
-        ),
+        )/
+        Dot11Elt(ID='SSID', info=args.ssid),
         iface=args.interface,
         loop=1,
         inter=args.interval,
