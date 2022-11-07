@@ -178,15 +178,15 @@ Suppose your WiFi chip (wlan1) is stuck to country code GB (see [Solution](https
 
 ### Example 2: emit probe request
 
-1. Emit on wlan1, channel 10, every second, using current time stamp as MAC prefix
+1. Emit on wlan1, channel 10, every second, using current time stamp as MAC prefix and the default "mock_probe_request" as SSID
 
     ```
     ./emit/emit.sh -i wlan1 -c 10 --interval 1
     ```
 
-2. Emit on wlan1, channel 5, with MAC prefix set to `12:34:56` and default emission interval
+2. Emit on wlan1, channel 5, with MAC prefix set to `12:34:56`, SSID set to `"awesome_blossom"`, and default emission interval
     ```
-    ./emit/emit.sh -i wlan1 -c 5 --mac 12:34:56
+    ./emit/emit.sh -i wlan1 -c 5 --mac 12:34:56 --ssid awesome_blossom
     ```
 
 ### Example 3: emit probe request on 30 and 40 dBm
